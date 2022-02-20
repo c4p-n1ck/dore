@@ -24,9 +24,13 @@ if [[ $machine == "Linux" ]]; then
 	    sudo apt update
 	    sudo apt install $deps -y
 
-    elif command -v yay &> /dev/null; then  # if it's an Arch, then you MUST have yay.
+    elif command -v yay &> /dev/null; then  # if it's an Arch, then you MUST have yay or paru.
 	    sudo pacman -Syu
 	    yay -S $deps --needed
+
+    elif command -v paru &> /dev/null; then  # if it's an Arch, then you MUST have yay or paru.
+	    sudo pacman -Syu
+	    paru -S $deps --needed
 
     elif [[ $linux_type == "Fedora" ]]; then
 	    sudo dnf install psmisc dbus-libs python3-dbus git tor -y
@@ -50,7 +54,7 @@ if [[ $machine == "Linux" ]]; then
     git clone https://github.com/emlid/systemd-manager
     cd systemd-manager
     sudo python3 setup.py install
-    cd -
+    cd - && rm -rf systemd-manager
 
     cmd="sudo systemctl status tor"
     echo -e "\n\n$cmd  # You might use start instead =)\n\n"
